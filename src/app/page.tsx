@@ -1,78 +1,35 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import React, { useState } from "react";
+import ClientSideRendering from "../components/ClientSideRendering";
+import ServerSideRendering from "../components/ServerSideRendering";
 
-interface ITodo {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
-}
-
-const MainPage = () => {
-  const [loading, setLoading] = useState(true);
-  const [todos, setTodos] = useState<ITodo[]>([]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchData();
-    }, 500);
-
-    AOS.init({
-      duration: 1000,
-      easing: "ease-out-back",
-      once: true,
-    });
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch(
-        "https://jsonplaceholder.typicode.com/todos"
-      );
-      const data = await response.json();
-      setTodos(data.slice(0, 10));
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setLoading(false);
-    }
-  };
+const HomePage = () => {
+  const [renderType, setRenderType] = useState<"csr" | "ssr" | null>(null);
 
   return (
-    <div className="min-h-screen bg-purple-400 flex items-center justify-center p-4 md:p-10">
-      {loading ? (
-        <div className="flex flex-col items-center">
-          <div className="loader border-t-4 border-blue-500 w-12 h-12 rounded-full animate-spin"></div>
-          <p className="mt-4 text-lg font-medium text-gray-700">Loading...</p>
-        </div>
-      ) : (
-        <div
-          className="p-5 bg-white shadow-lg rounded-lg w-full max-w-4xl mx-auto"
-          data-aos="fade-right"
+    <div className="min-h-screen flex flex-col items-center justify-center space-y-6 bg-purple-100 px-4 sm:px-8 md:px-16">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600 text-center">
+        Client-Side vs Server-Side Rendering
+      </h1>
+      <div className="space-x-4 flex flex-col justify-center items-center sm:flex-row sm:space-x-6">
+        <button
+          onClick={() => setRenderType("csr")}
+          className="px-4 sm:px-6 py-2 sm:py-3 bg-blue-500 text-white rounded-md hover:bg-blue-700 text-center mb-4 sm:mb-0 w-full sm:w-auto"
         >
-          <h1 className="text-2xl font-bold text-center mb-5 text-blue-600">
-            Fetched Todos
-          </h1>
-          <ul className="space-y-3">
-            {todos.map((todo) => (
-              <li
-                key={todo.id}
-                className="p-3 border border-gray-300 rounded-md bg-gray-50"
-                data-aos="fade-up"
-              >
-                <p className="font-semibold">Title: {todo.title}</p>
-                <p>Completed: {todo.completed ? "Yes" : "No"}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+          Client-Side Rendering
+        </button>
+        <button
+          onClick={() => setRenderType("ssr")}
+          className="px-4 sm:px-6 py-2 sm:py-3 bg-green-500 text-white rounded-md hover:bg-green-700 text-center w-full sm:w-auto"
+        >
+          Server-Side Rendering
+        </button>
+      </div>
+
+      {renderType === "csr" && <ClientSideRendering />}
+      {renderType === "ssr" && <ServerSideRendering />}
     </div>
   );
 };
 
-export default MainPage;
+export default HomePage;
