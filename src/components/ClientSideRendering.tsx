@@ -38,10 +38,10 @@ const ClientSideRendering = () => {
             {data.map((todo) => (
               <li
                 key={todo.id}
-                className="p-3 border border-gray-300 rounded-md bg-gray-50"
+                className="text-black p-3 border border-gray-300 rounded-md bg-gray-50"
               >
-                <p className="font-semibold">Title: {todo.title}</p>
-                <p>Completed: {todo.completed ? "Yes" : "No"}</p>
+                <p className="font-semibold text-black">Title: {todo.title}</p>
+                <p className="text-black">Completed: {todo.completed ? "Yes" : "No"}</p>
               </li>
             ))}
           </ul>

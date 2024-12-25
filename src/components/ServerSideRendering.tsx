@@ -62,10 +62,8 @@ const ServerSideRendering = ({ todos }: ServerSideRenderingProps) => {
             key={todo.id}
             className="p-4 border border-gray-300 rounded-lg shadow-md hover:bg-green-50"
           >
-            <h3 className="text-lg font-semibold text-gray-800">
-              {todo.title}
-            </h3>
-            <p className="text-sm text-gray-500">
+            <h3 className="text-lg font-semibold text-black">{todo.title}</h3>
+            <p className="text-sm text-black">
               Completed: {todo.completed ? "Yes" : "No"}
             </p>
           </li>
